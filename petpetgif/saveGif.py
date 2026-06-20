@@ -6,7 +6,7 @@
 # transparent pixels with black pixels (among other issues) when the GIF is saved using PIL.Image.save().
 # This code works around the issue and allows us to properly generate transparent GIFs.
 
-from typing import Tuple, List, Union
+from typing import Iterable, Tuple, List, Union, cast
 from collections import defaultdict
 from random import randrange
 from itertools import chain
@@ -23,10 +23,13 @@ class TransparentAnimatedGifConverter(object):
 
     def _process_pixels(self):
         """Set the transparent pixels to the color 0."""
+        raw_data = self._img_rgba.getchannel(channel='A').getdata()
+        alpha_data = cast(Iterable[int], raw_data)
+        
         self._transparent_pixels = set(
-            idx for idx, alpha in enumerate(
-                self._img_rgba.getchannel(channel='A').getdata())
-            if alpha <= self._alpha_threshold)
+            idx for idx, alpha in enumerate(alpha_data)
+            if alpha <= self._alpha_threshold
+        )
 
     def _set_parsed_palette(self):
         """Parse the RGB palette color `tuple`s from the palette."""
