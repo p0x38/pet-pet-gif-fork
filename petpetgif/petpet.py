@@ -1,8 +1,13 @@
 from PIL import Image
 from petpetgif.saveGif import save_transparent_gif
 from pathlib import Path
-import importlib.resources
 from typing import cast
+
+import sys
+if sys.version_info >= (3, 9):
+    import importlib.resources as importlib_resources
+else:
+    import importlib_resources
 
 frames = 10
 resolution = (128, 128)
@@ -19,7 +24,6 @@ def make(source, dest):
     """
     images = []
     base = Image.open(source).convert('RGBA').resize(resolution)
-    
     res_w, res_h = resolution
 
     for i in range(frames):
@@ -30,19 +34,19 @@ def make(source, dest):
         offsetY = (1 - height) - 0.08
 
         canvas = Image.new('RGBA', size=resolution, color=cast(int, (0,0,0,0)))
-        
+
         resized_w = round(width * res_w)
         resized_h = round(height * res_h)
         pos_x = round(offsetX * res_w)
         pos_y = round(offsetY * res_h)
-        
+
         canvas.paste(base.resize((resized_w, resized_h)), (pos_x, pos_y))
-        
-        img_path = importlib.resources.files(__package__ or __name__).joinpath(f"img/pet{i}.gif")
+
+        img_path = importlib_resources.files("petpetgif").joinpath(f"img/pet{i}.gif")
         with img_path.open("rb") as stream:
             pet = Image.open(stream).convert('RGBA').resize(resolution)
             canvas.paste(pet, mask=pet)
-        
+
         images.append(canvas)
 
     save_transparent_gif(images, durations=20, save_file=dest)

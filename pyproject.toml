@@ -1,7 +1,32 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
 [project]
 name = "pet-pet-gif-fork"
 version = "1.0.2"
-description = "Forked package of pet-pet-gif"
+description = "A fork of pet-pet-gif to generate petpet gifs"
 readme = "README.md"
-requires-python = ">=3.11"
-dependencies = []
+requires-python = ">=3.8"
+dependencies = [
+	"pillow>=9.0.0",
+	"importlib-resources>=5.0.0; python_version < '3.9'",
+]
+
+[tool.uv]
+package = true
+
+[tool.hatch.build.targets.wheel]
+packages = ["petpetgif"]
+
+[tool.hatch.build.targets.dist]
+include = [
+	"/petpetgif",
+	"/README.md",
+	"/LICENSE",
+]
+
+[dependency-groups]
+dev = [
+    "pytest>=8.0.0",
+]

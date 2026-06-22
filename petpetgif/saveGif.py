@@ -23,7 +23,7 @@ class TransparentAnimatedGifConverter(object):
 
     def _process_pixels(self):
         """Set the transparent pixels to the color 0."""
-        raw_data = self._img_rgba.getchannel(channel='A').getdata()
+        raw_data = self._img_rgba.getchannel(channel='A').get_flattened_data()
         alpha_data = cast(Iterable[int], raw_data)
         
         self._transparent_pixels = set(
