@@ -6,10 +6,10 @@
 # transparent pixels with black pixels (among other issues) when the GIF is saved using PIL.Image.save().
 # This code works around the issue and allows us to properly generate transparent GIFs.
 
-from typing import Iterable, Tuple, List, Union, cast
 from collections import defaultdict
-from random import randrange
 from itertools import chain
+from random import randrange
+from typing import Iterable, List, Tuple, Union, cast
 
 from PIL.Image import Image
 

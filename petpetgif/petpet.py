@@ -1,9 +1,10 @@
-from PIL import Image
-from petpetgif.saveGif import save_transparent_gif
-from pathlib import Path
+import sys
 from typing import cast
 
-import sys
+from PIL import Image
+
+from petpetgif.save_gif import save_transparent_gif
+
 if sys.version_info >= (3, 9):
     import importlib.resources as importlib_resources
 else:
